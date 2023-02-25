@@ -1,19 +1,13 @@
 package com.example.exercise.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data
 @Table(name = "tutorial")
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+@Data
 
 public class TutorialEntity {
     @Id
@@ -27,6 +21,6 @@ public class TutorialEntity {
     @Column(name = "description")
     String description;
 
-    @Column (name = "status")
-    boolean status;
+    @Column (name = "published")
+    boolean published;
 }
