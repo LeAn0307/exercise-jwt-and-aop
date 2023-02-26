@@ -10,6 +10,8 @@ import javax.persistence.*;
 @Data
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 
 public class TutorialEntity {
     @Id
@@ -25,6 +27,8 @@ public class TutorialEntity {
 
     @Column (name = "published")
     boolean published;
+
+
 
     public boolean getPublished() {
         return published;
