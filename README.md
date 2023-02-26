@@ -236,20 +236,148 @@ Các JoinPoint được sử dụng trong các advice để xác định điểm
 # :point_right: Phần II: Exception, Filter, Interceptor
 
 ## 1) Sử dụng interceptor để logging
-###  Tại hàm preHandle với message ”Pre Handle method is Calling”
-###  Tại hàm postHandle với message “Post Handle method is Calling”
-###  Tại hàm afterCompletion với message "Request and Response is completed"
-###  Sử dụng interceptor để thực hiện thống kê thời gian xử lý của mỗi request. Gợi ý như sau:
-###  + Tại preHandle thực hiện: request.setAttribute("startTime", startTime) với startTime là thời gian hiện tại 
-###  + Tại postHandle lấy giá trị "startTime”, dùng thời gian hiện tại thực hiện phép trừ và logging
-<img src ="https://user-images.githubusercontent.com/72481546/221402678-9af35a2a-8cd5-47f2-b6e4-27dac382b3f5.png" width ="50%"/>
+ 
+## :green_heart: Yêu cầu:
+```
+Tại hàm preHandle với message ”Pre Handle method is Calling”
+Tại hàm postHandle với message “Post Handle method is Calling”
+Tại hàm afterCompletion với message "Request and Response is completed"
+Sử dụng interceptor để thực hiện thống kê thời gian xử lý của mỗi request. Gợi ý như sau:
++ Tại preHandle thực hiện: request.setAttribute("startTime", startTime) với startTime là thời gian hiện tại 
++ Tại postHandle lấy giá trị "startTime”, dùng thời gian hiện tại thực hiện phép trừ và logging
+ 
+ ```
+ <img src ="https://user-images.githubusercontent.com/72481546/221402678-9af35a2a-8cd5-47f2-b6e4-27dac382b3f5.png" width ="50%"/>
+ 
+ ## :green_heart: Thực hiện.
+ ```
+ Interceptor là một bộ lọc được sử dụng để thực hiện một số thao tác nghiệp vụ trước hoặc sau khi một request được xử lý bởi controller. Ví dụ như xác thực người dùng, kiểm tra quyền truy cập, thêm header vào response, v.v. Interceptor được sử dụng trong Spring framework và có thể được đăng ký với một hoặc nhiều interceptor chain.
+ 
+ 
+ ```
+ File ProductServiceInterceptor
+ ``` java
+ package com.example.exercise.interceptor;
 
+import com.example.exercise.service.Impl.DepartmentServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+
+
+@Component
+public class ProductServiceInterceptor implements HandlerInterceptor {
+    private final Logger LOGGER =  LoggerFactory.getLogger(ProductServiceInterceptor.class);
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        LOGGER.info("Pre Handle method is Calling");
+        Date date = new Date();
+        long timeMilli = date.getTime();
+        request.setAttribute("startTime",timeMilli);
+        return HandlerInterceptor.super.preHandle(request, response, handler);
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+
+        Date date = new Date();
+        long timeBefore = (long) request.getAttribute("startTime");
+        long timeMilli = date.getTime();
+        timeMilli-=timeBefore;
+        LOGGER.info("Execution: "+ timeMilli+"ms");
+        LOGGER.info("Post Handle method is Calling");
+        HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        LOGGER.info("Request and Response is completed");
+        HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
+    }
+}
+ ```
+ 
+ ```
+ Code trên định nghĩa một class ProductServiceInterceptor và implements interface HandlerInterceptor. 
+
+HandlerInterceptor là một interface trong Spring Framework cho phép ta tương tác với request/response trước hoặc sau khi chúng được xử lý bởi một controller. Interface này bao gồm ba phương thức chính là preHandle(), postHandle(), và afterCompletion().
+
+preHandle(): được gọi trước khi controller được xử lý request. Trả về giá trị boolean để xác định liệu controller có nên được tiếp tục xử lý hay không.
+ 
+postHandle(): được gọi sau khi controller đã xử lý request và trả về ModelAndView (hoặc không). Cho phép ta thực hiện các thao tác bổ sung trên ModelAndView trước khi trả về cho client.
+ 
+afterCompletion(): được gọi khi đã hoàn thành việc xử lý request và trả về cho client.
+ 
+Trong class ProductServiceInterceptor, phương thức preHandle() được override để ghi log thông tin trước khi controller được gọi, lưu thời gian bắt đầu xử lý request vào thuộc tính startTime của request.
+
+Phương thức postHandle() được override để ghi log thời gian xử lý request, tính toán thời gian xử lý bằng cách lấy thời gian hiện tại trừ đi thời gian bắt đầu lưu trong thuộc tính startTime, và ghi log thông tin sau khi controller đã xử lý request.
+
+Phương thức afterCompletion() được override để ghi log khi đã hoàn thành việc xử lý request.
+ ```
+ 
+ ```
+ Sau khi tạo Interceptor, chúng ta cần thêm nó vào dự án. Đoạn mã trên là để thêm Interceptor vào dự án.
+ ```
+ <img src ="https://user-images.githubusercontent.com/72481546/221433163-754dc4f0-063f-477b-9ccc-bff12f70a7d0.png" width ="50%"/> 
+ 
 ## 2) Sử dụng filter để detect các loại browser
-
+ 
+ ## :sparkles: Yêu cầu:
+ 
+```
 ###  Nếu request từ các browser thì sẽ được vào controller
 ###  Nếu request từ Postman sẽ thực hiện như sau:
 ###  - Response về với status là 403, và message là "Bạn đang yêu cầu từ Postman!"
-<img src ="https://user-images.githubusercontent.com/72481546/221402898-af1756fb-0ae1-4a80-a729-2e941350ae8c.png" width ="50%"/>
+ 
+ ```
+ <img src ="https://user-images.githubusercontent.com/72481546/221402898-af1756fb-0ae1-4a80-a729-2e941350ae8c.png" width ="50%"/>
+ 
+ ## :sparkles: Thực hiện
+
+ <img src ="https://user-images.githubusercontent.com/72481546/221433556-f62964ed-682e-4738-9edd-6a281f8a863b.png" width ="50%"/>
+ 
+```
+ Filter trong Spring Boot là một thành phần giúp xử lý các yêu cầu của người dùng trước khi chúng được gửi đến servlet hoặc trả về sau khi servlet đã xử lý yêu cầu đó. Filter cung cấp cho các lập trình viên một cách để thực hiện các hoạt động tiền xử lý, xử lý ngoại lệ, ghi lại hoạt động và điều khiển truy cập. Filter thường được sử dụng để thực hiện các chức năng như kiểm soát truy cập, mã hóa yêu cầu và phản hồi, kiểm soát phiên và nhiều hơn nữa. Các filter trong Spring Boot được thiết kế để hoạt động với Spring MVC và Spring WebFlux và có thể được cấu hình bằng cách sử dụng các annotation như @Component và @Order hoặc thông qua các lớp cấu hình FilterRegistrationBean.
+ ```
+ 
+ 
+ ```
+Class TransactionFilter implements interface Filter, trong đó có 3 phương thức cần phải triển khai:
+
+Phương thức init(FilterConfig filterConfig): Phương thức này được gọi một lần duy nhất sau khi filter được tạo ra.
+ 
+Phương thức doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain): Đây là phương thức quan trọng nhất của Filter, 
+nó được gọi mỗi khi một request tới đích và trước khi response được trả về. Ở đoạn code này, phương thức kiểm tra header của request để xác định xem client có phải là Postman hay không. Nếu là Postman, phương thức sẽ trả về response với status code là 403 Forbidden và thông báo "Access is not allowed".
+ 
+Phương thức destroy(): Phương thức này được gọi một lần khi filter bị hủy.
+ 
+Class TransactionFilter được đánh dấu bằng @Order(1) để chỉ định thứ tự ưu tiên trong việc xử lý các filter. Với giá trị 1, TransactionFilter sẽ được thực hiện trước các filter khác có giá trị ưu tiên cao hơn.
+ ```
+ 
+ <img src ="https://user-images.githubusercontent.com/72481546/221434544-63acd642-7d56-4d04-b01c-c074fae9a20c.png" width ="50%"/>
+ 
+ ```
+ một lớp xử lý ngoại lệ (ExceptionHandler) được đánh dấu bằng @ControllerAdvice, được sử dụng để xử lý các ngoại lệ xảy ra trong quá trình thực thi các phương thức xử lý yêu cầu (@Controller).
+
+Trong đoạn code này, lớp ValidationHandler kế thừa từ ResponseEntityExceptionHandler - một lớp cơ sở của Spring Boot được sử dụng để xử lý các ngoại lệ liên quan đến HTTP (HTTP Exceptions), chẳng hạn như MethodArgumentNotValidException, một ngoại lệ xảy ra khi tham số truyền vào phương thức xử lý yêu cầu không hợp lệ.
+
+Phương thức handleMethodArgumentNotValid được sử dụng để xử lý ngoại lệ MethodArgumentNotValidException và trả về một đối tượng ResponseEntity chứa thông tin về các lỗi được tìm thấy trong các trường dữ liệu đầu vào không hợp lệ. Trong phương thức này, các lỗi được lưu trữ trong một Map với tên trường là khóa và thông báo lỗi là giá trị tương ứng.
+
+HttpStatus.BAD_REQUEST được trả về để biểu thị rằng yêu cầu của người dùng không hợp lệ và trả về HTTP status code 400 (Bad Request).
+
+
+
+
+ ```
+
 
 
 
