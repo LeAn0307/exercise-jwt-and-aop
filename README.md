@@ -53,13 +53,12 @@ logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{3
 
 Kết quả 
 
-![image]()
 <img src="https://user-images.githubusercontent.com/72481546/221406716-279c10d4-4532-4325-9624-535df2a19b14.png" alt="image" width="50%" style="display:block;">
 
 
-
-
 ### - Cài đặt level của logging là trace
+
+--- 
 
 ```
 logging.level.root=trace
@@ -69,24 +68,45 @@ logging.level.root=trace
 
 ## 2) Tạo 2 dto chứa các thuộc tính sau và sử dụng các annotation thực hiện validation
 
-### **EmployeeDto bao gồm:**
+##### **EmployeeDto bao gồm:**
 
-### - **employeeld**
-### - **name: không được rỗng, độ dài từ 10 đến 50 kí tự**
-### - **birthDate**
-### - **gender**
-### - **email: không được rỗng và đúng với format gmail**
+##### - **employeeld**
+##### - **name: không được rỗng, độ dài từ 10 đến 50 kí tự**
+##### - **birthDate**
+##### - **gender**
+##### - **email: không được rỗng và đúng với format gmail**
 
-### **DepartmentDto gồm**
+##### **DepartmentDto gồm**
 
-### - **departmentld**
-### - **deptName: không được rỗng, độ dài từ 10 đến 50 kí tự**
-### - **description: không được rỗng**
-### - **List<employeeDto>: valid được các thuộc annotaion đã cài đặt trong employeeDto**
+##### - departmentld
+##### - deptName: không được rỗng, độ dài từ 10 đến 50 kí tự
+##### - description: không được rỗng
+##### - List<employeeDto>: valid được các thuộc annotaion đã cài đặt trong employeeDto
+ 
+ Thêm vào pom.xml để sử dụng validation
+ 
+ ```
+         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+ ```
+ file EmployeeDto:
+ <img src="https://user-images.githubusercontent.com/72481546/221407908-57802971-788f-4d50-b543-3143568c686d.png" alt="image" width="50%" style="display:block;">
+##### Kết quả: 
+ ##### - **name: không được rỗng, độ dài từ 10 đến 50 kí tự**
+ 
+ 
+file DepartmentDto
+  <img src="https://user-images.githubusercontent.com/72481546/221407942-4a253b87-e39c-4197-86b0-f2ce1aaa4c42.png" alt="image" width="50%" style="display:block;">
 
-###  **Tạo api de test valid employeeDto**
+ 
 
-### **Tạo api để test valid departmentDto. Lưu ý phải valid được các thuộc tính trong List<employeeDto>**
+###  Tạo api de test valid employeeDto
+ 
+ 
+
+###  Tạo api để test valid departmentDto. Lưu ý phải valid được các thuộc tính trong List<employeeDto>
 
 ###  3) Tạo hai service tương ứng với hai dto tại (2). Mỗi service tạo một method tương ứng với dto
 
