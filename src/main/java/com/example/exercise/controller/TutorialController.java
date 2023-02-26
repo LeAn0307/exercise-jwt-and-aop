@@ -106,19 +106,18 @@ public class TutorialController {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @GetMapping("/tutorials/published")
     public ResponseEntity<List<TutorialEntity>> getTutorialsPublished() {
+
         try {
             List<TutorialEntity> tutorialList = tutorialService.findByPublished(true);
-            if(tutorialList.isEmpty()) {
-                return new ResponseEntity(HttpStatus.NO_CONTENT);
-            } else {
-                return new ResponseEntity<>(tutorialList, HttpStatus.OK);
-            }
+
+            return tutorialList.isEmpty()
+                    ? new ResponseEntity(HttpStatus.NO_CONTENT)
+                    : new ResponseEntity<>(tutorialList, HttpStatus.OK);
+
         } catch (Exception ex) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }
