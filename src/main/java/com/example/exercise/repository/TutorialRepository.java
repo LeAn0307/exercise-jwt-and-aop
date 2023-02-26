@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface TutorialRepository extends JpaRepository<TutorialEntity,Long> {
 
-    List<TutorialEntity> findAll();
+
     List<TutorialEntity> findByPublished(boolean published);
      List<TutorialEntity> findByTitleLike(String title);
 }

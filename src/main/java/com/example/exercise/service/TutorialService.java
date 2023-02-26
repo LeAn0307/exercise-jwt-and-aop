@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TutorialService{
     List<TutorialEntity> findAll();
-    List<TutorialEntity> findByTitleCharacter(String title);
+    List<TutorialEntity> findByTitleLike(String title);
     TutorialEntity findById(long id);
     void deleteById(long id);
     void deleteAll();

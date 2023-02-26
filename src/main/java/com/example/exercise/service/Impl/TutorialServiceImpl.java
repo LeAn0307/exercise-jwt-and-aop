@@ -19,7 +19,7 @@ public class TutorialServiceImpl implements TutorialService {
     }
 
     @Override
-    public List<TutorialEntity> findByTitleCharacter(String title) {
+    public List<TutorialEntity> findByTitleLike(String title) {
         return tutorialRepository.findByTitleLike(title);
     }
 

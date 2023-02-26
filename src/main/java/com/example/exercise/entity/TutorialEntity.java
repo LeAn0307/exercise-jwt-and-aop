@@ -8,6 +8,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "tutorial")
 @Data
+@Getter
+@Setter
 
 public class TutorialEntity {
     @Id
@@ -23,4 +25,8 @@ public class TutorialEntity {
 
     @Column (name = "published")
     boolean published;
+
+    public boolean getPublished() {
+        return published;
+    }
 }
