@@ -19,17 +19,19 @@ public class TutorialController {
     // Get all & get by title
     // GET /api/tutorials
     // GET /api/tutorials ? title =[keyword]
-    @GetMapping("tutorials")
+    @GetMapping("/tutorials")
     public ResponseEntity<List<TutorialEntity>> getListTutorials(@RequestParam(required = false)String title){
 
       try{
+
+          if (title == null) return new ResponseEntity( tutorialService.findAll(), HttpStatus.OK);
+
           if (tutorialService.findByTitleLike(title).isEmpty() || tutorialService.findAll().isEmpty())
               return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
           return title != null
                   ? new ResponseEntity( tutorialService.findByTitleLike(title), HttpStatus.OK)
                   : new ResponseEntity( tutorialService.findAll(), HttpStatus.OK);
-
       }
       catch (Exception ex){
           return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
