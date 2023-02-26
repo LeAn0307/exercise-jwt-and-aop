@@ -83,6 +83,10 @@ logging.level.root=trace
 ##### - description: không được rỗng
 ##### - List<employeeDto>: valid được các thuộc annotaion đã cài đặt trong employeeDto
  
+##### Tạo api de test valid employeeDto 
+
+##### Tạo api để test valid departmentDto. Lưu ý phải valid được các thuộc tính trong List<employeeDto>
+ 
  Thêm vào pom.xml để sử dụng validation
  
  ```
@@ -91,22 +95,58 @@ logging.level.root=trace
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
  ```
- file EmployeeDto:
+ 
+## File EmployeeDto:
+ 
  <img src="https://user-images.githubusercontent.com/72481546/221407908-57802971-788f-4d50-b543-3143568c686d.png" alt="image" width="50%" style="display:block;">
-##### Kết quả: 
- ##### - **name: không được rỗng, độ dài từ 10 đến 50 kí tự**
- 
- 
-file DepartmentDto
-  <img src="https://user-images.githubusercontent.com/72481546/221407942-4a253b87-e39c-4197-86b0-f2ce1aaa4c42.png" alt="image" width="50%" style="display:block;">
 
+### Kết quả: 
  
+##### name: không được rỗng, độ dài từ 10 đến 50 kí tự
+ 
+ - name = 1 ký tự ==> Báo lỗi
+ 
+  <img src="https://user-images.githubusercontent.com/72481546/221425356-bdc3a48a-42b6-476f-a001-0d0d87a9f870.png" alt="image" width="50%" style="display:block;">
+ 
+ 
+##### - **email: không được rỗng và đúng với format gmail**
+ 
+ - email rỗng  ==>  Báo lỗi 
 
-###  Tạo api de test valid employeeDto
+  <img src="https://user-images.githubusercontent.com/72481546/221425690-fef46d28-172b-4754-a3db-9d9b1bc25be2.png" alt="image" width="50%" style="display:block;">
  
+---
  
+## File DepartmentDto
+ 
+<img src="https://user-images.githubusercontent.com/72481546/221407942-4a253b87-e39c-4197-86b0-f2ce1aaa4c42.png" alt="image" width="50%" style="display:block;">
 
-###  Tạo api để test valid departmentDto. Lưu ý phải valid được các thuộc tính trong List<employeeDto>
+##### - deptName: không được rỗng, độ dài từ 10 đến 50 kí tự
+ 
+ - deptName = 2 ký tự => Lỗi
+
+<img src="https://user-images.githubusercontent.com/72481546/221425839-6e585f36-43ab-4f83-9a7b-95ad7cc1a4e4.png" alt="image" width="50%" style="display:block;">
+
+##### - description: không được rỗng
+ 
+ - description: rỗng => lỗi
+ 
+<img src="https://user-images.githubusercontent.com/72481546/221425916-df574c37-77c3-4a73-9a06-95251ad3053f.png" alt="image" width="50%" style="display:block;">
+
+##### - List<employeeDto>: valid được các thuộc annotaion đã cài đặt trong employeeDto
+
+Câu lệnh @Valid được sử dụng trong Spring để kiểm tra tính hợp lệ của đối tượng trước khi chúng được xử lý bởi controller. Trong trường hợp này, nó được sử dụng để kiểm tra tính hợp lệ của danh sách employeeDtoList.
+
+Khi sử dụng @Valid trên một đối tượng kiểu List, Spring sẽ kiểm tra tính hợp lệ của từng phần tử trong danh sách. Nếu một phần tử không hợp lệ, Spring sẽ trả về lỗi với thông tin chi tiết về vị trí và lý do của lỗi.
+ 
+ ```
+     @Valid
+     List<EmployeeDto> employeeDtoList;
+ ```
+ 
+ - Ví dụ: Không nhập trường name cho employeeDtoList
+ 
+<img src="https://user-images.githubusercontent.com/72481546/221426366-55d3fbf0-e22a-40bd-8252-74cde1b349ec.png" alt="image" width="50%" style="display:block;">
 
 ###  3) Tạo hai service tương ứng với hai dto tại (2). Mỗi service tạo một method tương ứng với dto
 
