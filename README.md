@@ -373,10 +373,11 @@ Phương thức handleMethodArgumentNotValid được sử dụng để xử lý
 
 HttpStatus.BAD_REQUEST được trả về để biểu thị rằng yêu cầu của người dùng không hợp lệ và trả về HTTP status code 400 (Bad Request).
 
-
-
-
  ```
+### Kết quả
+
+<img src ="https://user-images.githubusercontent.com/72481546/221494133-82c8bafb-3b78-492b-832d-cf5490d18aa7.png" width ="50%"/>
+ 
 
 
 
