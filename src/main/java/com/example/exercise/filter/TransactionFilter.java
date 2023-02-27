@@ -23,7 +23,7 @@ public class TransactionFilter implements Filter {
         Enumeration<String> headerNames = request.getHeaderNames();
         final String POST_MAN="Postman";
         String st = request.getHeader("user-agent");
-        if (st.contains(POST_MAN)) {
+        if (!st.contains(POST_MAN)) {
             ((HttpServletResponse) servletResponse).addHeader("name","Mi Mi");
             ((HttpServletResponse) servletResponse).setStatus(HttpServletResponse.SC_FORBIDDEN);
             ((HttpServletResponse) servletResponse).getWriter().write("Access is not allow");
