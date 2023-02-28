@@ -118,7 +118,7 @@ Màn hình Console:
  <img src="https://user-images.githubusercontent.com/72481546/221943050-98b9e59f-3b76-4d5c-8607-0cdd196ec541.png" width = "50%" style ="display:block" />
 
 ```
- http://localhost:8093/actuator/health
+ http://localhost:8093/actuator
 ```
 
 <img src="https://user-images.githubusercontent.com/72481546/221942666-5ad9655f-2534-44a9-8301-bd2df13442f3.png" width = "50%" style ="display:block" />
