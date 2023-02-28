@@ -1,8 +1,8 @@
 package com.example.exercise.service;
 
 import com.example.exercise.entity.TutorialEntity;
-import com.example.exercise.entity.TutorialEntity;
 import com.example.exercise.repository.TutorialRepository;
+
 import com.example.exercise.service.Impl.TutorialServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -13,17 +13,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
 @ExtendWith(MockitoExtension.class)
 @DataJpaTest
-class TutorialEntityServiceTest {
+class TutorialServiceTest {
 
     @Mock
     TutorialRepository tutorialRepository;

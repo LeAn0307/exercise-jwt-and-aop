@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,18 +17,16 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 @DataJpaTest
 class TutorialRepositoryTest {
 
     @Mock
     TutorialRepository tutorialRepository;
 
-//    @BeforeEach
-//    void addTutorial() {
-//        when(tutorialRepository.findById(1L)).thenReturn(Optional.of(new Tutorial(1L, null, null, false)));
-//    }
-
+    //    @BeforeEach
+    //    void addTutorial() {
+    //        when(tutorialRepository.findById(1L)).thenReturn(Optional.of(new Tutorial(1L, null, null, false)));
+    //    }
     @AfterEach
     void tearDown() {
         tutorialRepository.deleteAll();
